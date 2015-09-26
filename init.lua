@@ -8,8 +8,8 @@ local function light_it_up(itemstack, placer, pointed_thing)
 	for i = 1,60 do
 		local pos1 = {x=pos.x, y=pos.y-i, z=pos.z}
 		local pos2 = {x=pos1.x, y=pos1.y-1, z=pos1.z}
-		if minetest.get_item_group(minetest.get_node( {x=pos1.x, y=pos1.y+1, z=pos1.z}).name, "light") < 1
-		and pos ~= {x=pos1.x, y=pos1.y+1, z=pos1.z} then 
+		if minetest.get_item_group(minetest.get_node( {x=pos1.x, y=pos1.y+1, z=pos1.z}).name, "light") < 1 then
+		--and pos ~= {x=pos1.x, y=pos1.y+1, z=pos1.z} then 
 			return 
 		end
 		if minetest.get_node(pos1).name == "air" then
@@ -88,10 +88,12 @@ minetest.register_node("projection_light:water_light_node", {
 	is_ground_content = false,
 	drop = "",
 	drowning = 1,
-	liquidtype = "none",
+	liquidtype = "source",
 	liquid_alternative_source = "projection_light:water_light_node",
+	liquid_alternative_flowing = "projection_light:water_light_node",
 	liquid_viscosity = 1,
-	post_effect_color = {a = 120, r = 30, g = 60, b = 90},
+	liquid_range = 0,
+	post_effect_color = {a = 90, r = 80, g = 85, b = 150},
 	groups = {water = 3, liquid = 3, puts_out_fire = 1, light=1, not_in_creative_inventory=1},
 })
 
@@ -163,7 +165,7 @@ minetest.register_abm({
 
 --crafts
 minetest.register_craft({
-	output = "projection_lights:light";
+	output = "projection_light:light";
 	recipe = {
 		{ "default:steel_ingot", "default:steel_ingot", "default:steel_ingot", },
 		{ "group:glass", "default:torch", "group:glass", },
@@ -171,7 +173,7 @@ minetest.register_craft({
 	}
 })
 minetest.register_craft({
-	output = "projection_lights:light";
+	output = "projection_light:light";
 	recipe = {
 		{ "default:steel_ingot", "default:steel_ingot", "default:steel_ingot", },
 		{ "default:glass", "default:torch", "default:glass", },
@@ -180,7 +182,7 @@ minetest.register_craft({
 })
 if (minetest.get_modpath("moreblocks")) then
 	minetest.register_craft({
-		output = "projection_lights:light";
+		output = "projection_light:light";
 		recipe = {
 			{ "moreblocks:super_glo_glass", "", "", },
 			{ "moreblocks:super_glo_glass", "", "", },
@@ -190,7 +192,7 @@ if (minetest.get_modpath("moreblocks")) then
 end
 if (minetest.get_modpath("homedecor")) then
 	minetest.register_craft({
-		output = "projection_lights:light";
+		output = "projection_light:light";
 		recipe = {
 			{ "homedecor:glowlight_quarter_white", "", "", },
 			{ "homedecor:glowlight_quarter_white", "", "", },
@@ -198,3 +200,7 @@ if (minetest.get_modpath("homedecor")) then
 		}
 	})
 end
+
+-- to fix for old get_mod
+minetest.register_alias("projection_lights:light_node", "projection_light:light_node")
+minetest.register_alias("projection_lights:light", "projection_light:light")
